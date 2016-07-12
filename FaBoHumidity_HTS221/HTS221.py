@@ -88,13 +88,16 @@ T0_OUT_H       = 0x3D
 T1_OUT_L       = 0x3E
 T1_OUT_H       = 0x3F
 
+## smbus
 bus = smbus.SMBus(1)
 
-##  FaBo Humidity I2C Controll class
+## FaBo Humidity I2C Controll class
 class HTS221:
-    # @brief コンストラクタ
-    def __init__(self):
-        self.address = SLAVE_ADDRESS
+
+    ## Constructor
+    #  @param [in] address HTS221 I2C slave address default:0x5f
+    def __init__(self, address=SLAVE_ADDRESS):
+        self.address = address
 
         self.powerOn()
         self.configDevice()

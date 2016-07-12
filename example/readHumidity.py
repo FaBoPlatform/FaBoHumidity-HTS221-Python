@@ -12,13 +12,19 @@
 
 import FaBoHumidity_HTS221
 import time
+import sys
 
 hts221 = FaBoHumidity_HTS221.HTS221()
 
-while True:
-    humi = hts221.readHumi()
-    temp = hts221.readTemp()
-    print "Humidity = ", humi
-    print "Temp     = ", temp
-    print
-    time.sleep(1)
+try:
+    while True:
+        humi = hts221.readHumi()
+        temp = hts221.readTemp()
+        print "Humidity = ", humi
+        print "Temp     = ", temp
+        print
+
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    sys.exit()
