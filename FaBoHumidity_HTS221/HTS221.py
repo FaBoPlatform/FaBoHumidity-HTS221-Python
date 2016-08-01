@@ -1,6 +1,6 @@
 # coding: utf-8
-## @package FaBoHumidity_HTS221
-#  This is a library for the FaBo Humidity I2C Brick.
+## @package HTS221
+#  This is a FaBoHumidity_HTS221 library for the FaBo Humidity I2C Brick.
 #
 #  http://fabo.io/208.html
 #
@@ -24,45 +24,73 @@ DEVICE_ID     = 0xBC
 
 # AV_CONF:AVGH
 # Averaged humidity samples configuration
-AVGH_4    = 0b00000000
-AVGH_8    = 0b00000001
-AVGH_16   = 0b00000010
-AVGH_32   = 0b00000011 # defalut
-AVGH_64   = 0b00000100
-AVGH_128  = 0b00000101
-AVGH_256  = 0b00000110
-AVGH_512  = 0b00000111
+## AVGH_4   : 0b00000000
+AVGH_4    = 0x00
+## AVGH_8   : 0b00000001
+AVGH_8    = 0x01
+## AVGH_16  : 0b00000010
+AVGH_16   = 0x02
+## AVGH_32  : 0b00000011 # defalut
+AVGH_32   = 0x03
+## AVGH_64  : 0b00000100
+AVGH_64   = 0x04
+## AVGH_128 : 0b00000101
+AVGH_128  = 0x05
+## AVGH_256 : 0b00000110
+AVGH_256  = 0x06
+## AVGH_512 : 0b00000111
+AVGH_512  = 0x07
 
 # AV_CONF:AVGT
 # Averaged temperature samples configuration
-AVGT_2    = 0b00000000
-AVGT_4    = 0b00001000
-AVGT_8    = 0b00010000
-AVGT_16   = 0b00011000 # defalut
-AVGT_32   = 0b00100000
-AVGT_64   = 0b00101000
-AVGT_128  = 0b00110000
-AVGT_256  = 0b00111000
+## AVGT_2   : 0b00000000
+AVGT_2    = 0x00
+## AVGT_4   : 0b00001000
+AVGT_4    = 0x08
+## AVGT_8   : 0b00010000
+AVGT_8    = 0x10
+## AVGT_16  : 0b00011000 # defalut
+AVGT_16   = 0x18
+## AVGT_32  : 0b00100000
+AVGT_32   = 0x20
+## AVGT_64  : 0b00101000
+AVGT_64   = 0x28
+## AVGT_128 : 0b00110000
+AVGT_128  = 0x30
+## AVGT_256 : 0b00111000
+AVGT_256  = 0x38
 
 # CTRL_REG1
-PD        = 0b10000000 # Power Down control
-BDU       = 0b00000100 # Block Data Update control
-ODR_ONE   = 0b00000000 # Output Data Rate : One Shot
-ODR_1HZ   = 0b00000001 # Output Data Rate : 1Hz
-ODR_7HZ   = 0b00000010 # Output Data Rate : 7Hz
-ODR_125HZ = 0b00000011 # Output Data Rate : 12.5Hz
+## Power Down control : 0b10000000
+PD        = 0x80
+## Block Data Update control : 0b00000100
+BDU       = 0x04
+## Output Data Rate : One Shot : 0b00000000
+ODR_ONE   = 0x00
+## Output Data Rate : 1Hz : 0b00000001
+ODR_1HZ   = 0x01
+## Output Data Rate : 7Hz : 0b00000010
+ODR_7HZ   = 0x02
+## Output Data Rate : 12.5Hz : 0b00000011
+ODR_125HZ = 0x03
 
 # CTRL_REG2
-BOOT      = 0b10000000 # Reboot memory content
-HEATER    = 0b00000010 # Heater
-ONE_SHOT  = 0b00000001 # One shot enable
+## Reboot memory content : 0b10000000
+BOOT      = 0x80
+## Heater : 0b00000010
+HEATER    = 0x02
+## One shot enable : 0b00000001
+ONE_SHOT  = 0x01
 
 # CTRL_REG3
-CTRL_REG3_DEFAULT = 0x00 # DRDY pin is no connect in FaBo Brick
+## DRDY pin is no connect in FaBo Brick
+CTRL_REG3_DEFAULT = 0x00
 
 # STATUS_REG
-H_DA           = 0x02 # Humidity Data Available
-T_DA           = 0x01 # Temperature Data Available
+# Humidity Data Available
+H_DA           = 0x02
+## Temperature Data Available
+T_DA           = 0x01
 
 # Register Addresses
 AV_CONF        = 0x10
@@ -157,7 +185,7 @@ class HTS221:
         self.t1_out  = self.dataConv(t1_l, t1_h) #int16
 
     ## 湿度出力
-    #  @return 湿度(Rh%)
+    #  @return humidity 湿度(Rh%)
     def readHumi(self):
         humidity = 0.0
 
@@ -179,7 +207,7 @@ class HTS221:
         return humidity
 
     ## 温度出力
-    #  @return 温度(Deg C)
+    #  @return temperature 温度(Deg C)
     def readTemp(self):
         temperature = 0.0
 
@@ -208,14 +236,3 @@ class HTS221:
         if(value & (1 << 16 - 1)):
             value -= (1<<16)
         return value
-
-if __name__ == "__main__":
-    hts221 = HTS221()
-
-    while True:
-        humi = hts221.readHumi()
-        temp = hts221.readTemp()
-        print "Humidity = ", humi
-        print "Temp     = ", temp
-        print
-        time.sleep(1)
